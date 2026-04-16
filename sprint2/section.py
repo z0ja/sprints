@@ -1,7 +1,14 @@
-fichier = "../pdfs/mikheev J02-3002.txt"
+fichier = "../pdfs/Mikolov.txt"
 
 with open(fichier,"r",encoding="utf8") as f:
     lignes = f.readlines()
+
+
+if lignes[0].find("[") != -1:
+    lignes.pop(0)
+
+if lignes[0] == "\n":
+    lignes.pop(0)
 
 if lignes[0][-2] == ".":
     titre = lignes.pop(0)
