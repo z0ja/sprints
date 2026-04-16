@@ -1,8 +1,12 @@
-fichier = "../pdfs/Mikolov.txt"
+fichier = "../pdfs/Torres-moreno1998.txt"
 
 with open(fichier,"r",encoding="utf8") as f:
     lignes = f.readlines()
 
+
+while lignes[1] == "\n":
+    lignes.pop(0)
+    lignes.pop(0)
 
 if lignes[0].find("[") != -1:
     lignes.pop(0)
