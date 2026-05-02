@@ -1,0 +1,143 @@
+Métadonnées Das_Martins.pdf :
+format: PDF 1.4
+title: 
+author: 
+subject: 
+keywords: 
+creator: LaTeX with hyperref package
+producer: pdfTeX-1.40.3
+creationDate: D:20071121164646-05'00'
+modDate: D:20071121164646-05'00'
+trapped: 
+encryption: None
+----------------------------------------
+Métadonnées Nasr.pdf :
+format: PDF 1.4
+title: MACAON An NLP Tool Suite for Processing Word Lattices
+author: Alexis Nasr ; Frederic Bechet ; Jean-Francois Rey ; Benoit Favre ; Joseph Le Roux
+subject: Demos 2011
+keywords: 
+creator: LaTeX with hyperref package
+producer: pdfeTeX-1.21a
+creationDate: D:20110518220357-07'00'
+modDate: 
+trapped: 
+encryption: None
+----------------------------------------
+Métadonnées mikheev J02-3002.pdf :
+format: PDF 1.2
+title: /c/1997c/tops/dvips
+author: joe@diskserver.castanet.com Joe Pickert
+subject: 
+keywords: 
+creator:  TeX output 2002.08.13:1102
+producer: Acrobat Distiller 4.05 for Macintosh
+creationDate: D:20020816091634
+modDate: D:20020816091643-05'00'
+trapped: 
+encryption: None
+----------------------------------------
+Métadonnées Mikolov.pdf :
+format: PDF 1.5
+title: 
+author: 
+subject: 
+keywords: 
+creator: LaTeX with hyperref package
+producer: pdfTeX-1.40.12
+creationDate: D:20130910000346Z
+modDate: D:20130910000346Z
+trapped: 
+encryption: None
+----------------------------------------
+Métadonnées Torres-moreno1998.pdf :
+format: PDF 1.4
+title: Efficient Adaptive Learning for Classification Tasks with Binary Units
+author: joe@next.castanet.com Joe Pickert
+subject: 
+keywords: 
+creator: PDFplus
+producer: Atypon Systems, Inc.; modified using iText 4.2.0 by 1T3XT
+creationDate: D:19980702142157
+modDate: D:20140904072002-07'00'
+trapped: 
+encryption: None
+----------------------------------------
+Métadonnées Iria_Juan-Manuel_Gerardo.pdf :
+format: PDF 1.4
+title: On the Development of the RST Spanish Treebank
+author: Iria da Cunha ; Juan-Manuel Torres-Moreno ; Gerardo Sierra
+subject: LAW 2011
+keywords: 
+creator: LaTeX with hyperref package
+producer: pdfeTeX-1.21a
+creationDate: D:20110520231254-07'00'
+modDate: 
+trapped: 
+encryption: None
+----------------------------------------
+Métadonnées Gonzalez_2018_Wisebe.pdf :
+format: PDF 1.6
+title: WiSeBE: Window-Based Sentence Boundary Evaluation
+author: Carlos-Emiliano González-Gallardo 
+subject: Advances in Computational Intelligence, doi:10.1007/978-3-030-04497-8_10
+keywords: Sentence Boundary Detection,Evaluation,Transcripts,Human judgment
+creator: Springer
+producer: Acrobat Distiller 10.1.8 (Windows)
+creationDate: D:20181117192937+05'30'
+modDate: D:20181117193109+05'30'
+trapped: 
+encryption: None
+----------------------------------------
+Métadonnées kesslerMETICS-ICDIM2019.pdf :
+format: PDF 1.5
+title: 
+author: 
+subject: 
+keywords: 
+creator: TeX
+producer: pdfTeX-1.40.19
+creationDate: D:20190916104330+02'00'
+modDate: D:20190916104330+02'00'
+trapped: 
+encryption: None
+----------------------------------------
+Métadonnées Boudin-Torres-2006.pdf :
+format: PDF 1.4
+title: A Scalable MMR Approach to Sentence Scoring for Multi-Document Update Summarization
+author: Florian Boudin ; Marc El-Beze ; Juan-Manuel Torres-Moreno
+subject: POSTERS 2008
+keywords: 
+creator: LaTeX with hyperref package
+producer: pdfTeX-1.40.3
+creationDate: D:20080728171040+01'00'
+modDate: D:20080728171040+01'00'
+trapped: 
+encryption: None
+----------------------------------------
+Métadonnées Torres.pdf :
+format: PDF 1.6
+title: 
+author: 
+subject: 
+keywords: 
+creator: Adobe Acrobat Pro 10.1.2
+producer: Adobe Acrobat Pro 10.1.2
+creationDate: D:20120517083312-05'00'
+modDate: D:20120517083317-05'00'
+trapped: 
+encryption: None
+----------------------------------------
+Métadonnées kessler94715.pdf :
+format: PDF 1.5
+title: 
+author: 
+subject: 
+keywords: 
+creator: 'Certified by IEEE PDFeXpress at 10/14/2019 2:11:14 AM'
+producer: pdfTeX-1.40.19
+creationDate: D:20190905194209Z
+modDate: D:20191014021114-07'00'
+trapped: 
+encryption: None
+----------------------------------------
