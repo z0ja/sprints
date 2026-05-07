@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<article>
+  <preamble>mikheev J02-3002.pdf</preamble>
+  <titre>c⃝2002 Association for Computational Linguistics</titre>
+  <auteurs>
+    <auteur>
+      <name>Periods</name>
+      <mail />
+    </auteur>
+    <auteur>
+      <name>Capitalized Words</name>
+      <mail />
+    </auteur>
+    <auteur>
+      <name>Andrei Mikheev∗</name>
+      <mail>mikheev@cogsci.ed.ac.uk</mail>
+    </auteur>
+  </auteurs>
+  <abstract />
+  <biblio>Washington, D.C., Morgan Kaufmann. Brill, Eric. 1995a. Transformation-based error-driven learning and natural language parsing: A case study in part-of-speech tagging. Computational Linguistics 21(4):543–565. Brill, Eric. 1995b. “Unsupervised learning of disambiguation rules for part of speech tagging.” In David Yarovsky and Kenneth Church, editors, Proceedings of the Third Workshop on Very Large Corpora, pages 1–13, Somerset, New Jersey. Association for Computational Linguistics. Burnage, Gavin. 1990. CELEX: A Guide for Users. Centre for Lexical Information, Nijmegen, Netherlands.
+Francis, W. Nelson and Henry Kucera. 1982. Frequency Analysis of English Usage: Lexicon and Grammar. Houghton Mifﬂin, New York. Gale, William, Kenneth Church, and David Yarowsky. 1992. “One sense per discourse.” In Proceedings of the Fourth DARPA Speech and Natural Language Workshop, pages 233–237. Grefenstette, Gregory and Pasi Tapanainen. 1994. “What is a word, what is a sentence? Problems of tokenization.” In The Proceedings of Third Conference on Computational Lexicography and Text Research (COMPLEX’94), Budapest, Hungary. Krupka, George R. and Kevin Hausman. 1998. Isoquest Inc.: Description of the netowl extractor system as used for MUC-7. In Proceedings of the Seventh Message Understanding Conference (MUC-7), Fairfax, VA. Morgan Kaufmann. Kuhn, Roland and Renato de Mori. 1998. A cache-based natural language model for speech recognition. IEEE Transactions on Pattern Analysis and Machine Intelligence 12:570–583. Kupiec, Julian. 1992. Robust part-of-speech tagging using a hidden Markov model. Computer Speech and Language. Mani, Inderjeet and T. Richard MacMillan. 1995. “Identifying unknown proper names in newswire text.” In B. Boguraev and J. Pustejovsky, editors, Corpus Processing for Lexical Acquisition. MIT Press, Cambridge, Massachusetts, pages 41–59. Marcus, Mitchell, Mary Ann Marcinkiewicz, and Beatrice Santorini. 1993. Building a large annotated corpus of English: The Penn treebank. Computational Linguistics 19(2):313–329. Mikheev, Andrei. 1997. Automatic rule induction for unknown word guessing. Computational Linguistics 23(3):405–423. Mikheev, Andrei. 1999. A knowledge-free method for capitalized word disambiguation. In Proceedings of the 37th Conference of the Association for Computational Linguistics (ACL’99), pages 159–168, University of Maryland, College Park. Mikheev, Andrei. 2000. “Tagging sentence boundaries.” In Proceedings of the First Meeting of the North American Chapter of the Computational Linguistics (NAACL’2000), pages 264–271, Seattle, Washington. Morgan Kaufmann. Mikheev, Andrei, Clair Grover, and Colin Matheson. 1998. TTT: Text Tokenisation Tool. Language Technology Group, University of Edinburgh. Available at http://www.ltg.ed.ac.uk/software/ttt/ index.html. Mikheev, Andrei, Clair Grover, and Marc Moens. 1998. Description of the ltg system used for MUC-7. In Seventh Message Understanding Conference (MUC–7): Proceedings of a Conference Held in Fairfax, Virginia. Morgan Kaufmann. Mikheev, Andrei and Liubov Liubushkina. 1995. Russian morphology: An engineering approach. Natural Language Engineering 1(3):235–260. Palmer, David D. and Marti A. Hearst. 1994. “Adaptive sentence boundary disambiguation.” In Proceedings of the Fourth ACL Conference on Applied Natural Language Processing (ANLP’94), pages 78–83, Stuttgart, Germany, October. Morgan Kaufmann. Palmer, David D. and Marti A. Hearst. 1997. Adaptive multilingual sentence boundary disambiguation. Computational Linguistics 23(2):241–269. Park, Youngja and Roy J. Byrd. 2001. “Hybrid text mining for ﬁnding abbreviations and their deﬁnitions.” In Proceedings of the Conference on Empirical Methods in Natural Language Processing (EMLP’01), pages 16–19, Washington, D.C. Morgan Kaufmann. Ratnaparkhi, Adwait. 1996. “A maximum entropy model for part-of-speech</biblio>
+</article>

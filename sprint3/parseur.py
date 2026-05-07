@@ -1,10 +1,13 @@
 import re
 import os
+import sys
+import argparse
 import pymupdf
 from xml.etree.ElementTree import Element, SubElement, ElementTree, indent
 
-PDFS_DIR = os.path.join(os.path.dirname(__file__), "../pdfs")
-OUTPUT_DIR = os.path.join(os.path.dirname(__file__), "xmls")
+PDFS_DIR   = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../pdfs")
+XML_DIR    = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../xmls")
+TXT_DIR    = os.path.join(os.path.dirname(os.path.abspath(__file__)), "../txts")
 
 INSTITUTION_RE = re.compile(
     r'universit|institu|laborator|\blab\b|cnrs|école|polytechn|research|'
@@ -31,54 +34,57 @@ ENDS_WITH_PREP_RE = re.compile(
 # ---------------------------------------------------------------------------
 
 def extract_pdf_metadata(pdf_path):
-    """Return (title, authors_raw) extracted from PDF metadata."""
+    """Retourne (title, authors_raw, txt_content) extraits directement du PDF."""
     try:
         doc = pymupdf.open(pdf_path)
         meta = doc.metadata
+
+        pages_text = []
+        for page in doc:
+            pages_text.append(page.get_text())
+        txt_content = "\n".join(pages_text)
+
         doc.close()
-    except Exception:
-        return "", ""
+    except Exception as e:
+        print(f"[WARN] pymupdf ne peut pas lire {pdf_path} : {e}")
+        return "", "", ""
 
     title_raw = (meta.get("title") or "").strip()
     author_raw = (meta.get("author") or "").strip()
 
-    # Reject garbage titles (TeX output paths, backslash commands)
     if "/" in title_raw or title_raw.startswith("\\"):
         title_raw = ""
 
-    # Reject digitizer/producer author entries (contain an email)
     if "@" in author_raw:
         author_raw = ""
 
-    # pymupdf uses ";" as separator; normalise to match the rest of the code
-    # (split on ";" already handled downstream via re.split(r'\s*;\s*', ...))
-    return title_raw, author_raw
+    return title_raw, author_raw, txt_content
 
 
 def list_articles(pdfs_dir):
-    """Scan pdfs_dir for PDF files and return article dicts."""
+    """Parcourt pdfs_dir pour trouver les PDF et retourne une liste de dicts article."""
     articles = []
     for fname in sorted(os.listdir(pdfs_dir)):
         if not fname.lower().endswith(".pdf"):
             continue
         pdf_path = os.path.join(pdfs_dir, fname)
-        title, authors_raw = extract_pdf_metadata(pdf_path)
+        title, authors_raw, txt_content = extract_pdf_metadata(pdf_path)
         articles.append({
             "filename": fname,
             "title": title,
             "authors_raw": authors_raw,
+            "txt_content": txt_content,
         })
     return articles
 
 
 # ---------------------------------------------------------------------------
-# Email extraction (handles grouped formats)
+# Extraction des emails
 # ---------------------------------------------------------------------------
 
 def expand_emails(text):
     emails = []
 
-    # Grouped curly braces: {name1, name2}@domain.com
     for m in re.finditer(r'\{([^}]+)\}@([\w.\-]+)', text):
         domain = m.group(2)
         for name in m.group(1).split(","):
@@ -86,17 +92,13 @@ def expand_emails(text):
             if name:
                 emails.append(f"{name}@{domain}")
 
-    # Grouped parentheses on one line or split across newline:
-    # (a,b,c)\n@domain  or  (a,b,c)@domain
     for m in re.finditer(r'\(([^)]+)\)\s*\n?@([\w.\-]+)', text):
         domain = m.group(2)
         for name in m.group(1).split(","):
             name = name.strip()
-            # Keep only entries that look like email local parts (contain a dot or dash)
             if name and ("." in name or "-" in name):
                 emails.append(f"{name}@{domain}")
 
-    # Standard emails, ignoring known digitizer domains
     bad_domains = {"diskserver.castanet.com", "next.castanet.com"}
     for m in re.finditer(r'[\w.\-]+@[\w.\-]+\.\w+', text):
         email = m.group(0).strip("().,;")
@@ -104,7 +106,6 @@ def expand_emails(text):
         if domain not in bad_domains:
             emails.append(email)
 
-    # Deduplicate preserving order
     seen = set()
     result = []
     for e in emails:
@@ -115,7 +116,7 @@ def expand_emails(text):
 
 
 # ---------------------------------------------------------------------------
-# Title extraction from txt
+# Extraction du titre depuis le texte
 # ---------------------------------------------------------------------------
 
 def extract_title_from_txt(text):
@@ -128,16 +129,16 @@ def extract_title_from_txt(text):
             continue
         if INSTITUTION_RE.search(line) or "@" in line:
             break
-        # A numbered author line means the title is done
+        # Une ligne d'auteur numérotée indique que le titre est terminé
         if NUMBERED_AUTHOR_RE.match(line):
             break
-        # If the previous title line ended with a preposition/conjunction,
-        # force this line to be a continuation regardless of its shape
+        # Si la ligne précédente se termine par une préposition/conjonction,
+        # forcer la continuation quelle que soit la forme de cette ligne
         if title_lines and ENDS_WITH_PREP_RE.search(title_lines[-1]):
             title_lines.append(line)
             continue
-        # Stop when we hit what looks like an author name:
-        # short line, starts with capital, no common "title" words
+        # Stopper dès qu'on reconnaît un nom d'auteur :
+        # ligne courte, majuscule initiale, pas de mot de titre courant
         words = line.split()
         if (title_lines
                 and 1 <= len(words) <= 5
@@ -152,11 +153,11 @@ def extract_title_from_txt(text):
 
 
 # ---------------------------------------------------------------------------
-# Author extraction from txt
+# Extraction des auteurs depuis le texte
 # ---------------------------------------------------------------------------
 
 def _looks_like_name(line):
-    """Return True if the line looks like one or more person names."""
+    """Retourne True si la ligne ressemble à un ou plusieurs noms de personnes."""
     line = line.strip()
     if not line or len(line) > 120:
         return False
@@ -169,8 +170,8 @@ def _looks_like_name(line):
     words = line.split()
     if len(words) > 20:
         return False
-    # Most words should start with a capital (proper nouns / names),
-    # excluding short function words like "de", "da", "van", "and"
+    # La majorité des mots doit commencer par une majuscule (noms propres),
+    # à l'exclusion des mots-outils courts comme "de", "da", "van", "and"
     FUNC = {"de", "da", "van", "von", "la", "le", "du", "der", "and", "the"}
     content_words = [w for w in words if w.lower() not in FUNC]
     if not content_words:
@@ -180,11 +181,11 @@ def _looks_like_name(line):
 
 
 def extract_authors_from_txt(text):
-    """Extract author names from the preamble (before Abstract)."""
+    """Extrait les noms d'auteurs depuis le préambule (avant l'Abstract)."""
     abs_match = re.search(r'\bAbstract\b', text, re.IGNORECASE)
     preamble = text[: abs_match.start()] if abs_match else text[:500]
 
-    # Extract the title so we can skip those lines
+    # Extraire le titre pour pouvoir ignorer ses lignes
     title = extract_title_from_txt(text)
     title_norm = re.sub(r'\s+', ' ', title.lower().strip())
 
@@ -196,18 +197,18 @@ def extract_authors_from_txt(text):
         if SKIP_LINE_RE.match(line):
             continue
 
-        # Handle numbered author format right away (overrides title detection)
+        # Traiter immédiatement le format d'auteur numéroté (prioritaire sur la détection du titre)
         nm = NUMBERED_AUTHOR_RE.match(line)
         if nm:
             past_title = True
             raw_author_lines.append(nm.group(1).strip())
             continue
 
-        # Skip institution/email lines
+        # Ignorer les lignes d'institution ou d'email
         if INSTITUTION_RE.search(line) or "@" in line:
             continue
 
-        # Detect end of title: once we've passed the title text, switch flag
+        # Détecter la fin du titre : basculer le drapeau dès qu'on dépasse le texte du titre
         if not past_title:
             line_norm = re.sub(r'\s+', ' ', line.lower().strip())
             if line_norm in title_norm or title_norm.startswith(line_norm):
@@ -219,7 +220,7 @@ def extract_authors_from_txt(text):
 
     authors = []
     for line in raw_author_lines:
-        # Split comma/and-separated names (e.g. "Name1, Name2, and Name3")
+        # Séparer les noms par virgule ou "and" (ex. "Nom1, Nom2, and Nom3")
         if re.search(r',\s*[A-ZÀ-Ö]|\band\b', line):
             parts = re.split(r',\s*(?:and\s+)?|\s+and\s+', line)
             for p in parts:
@@ -233,23 +234,23 @@ def extract_authors_from_txt(text):
 
 
 # ---------------------------------------------------------------------------
-# Abstract extraction
+# Extraction de l'abstract
 # ---------------------------------------------------------------------------
 
 def extract_abstract(text):
-    # Look for "Abstract" header (plain, with dot, or with em-dash)
+    # Chercher l'en-tête "Abstract" (simple, avec point ou tiret long)
     abs_match = re.search(r'\bAbstract\b[.\-—\s]*\n?', text, re.IGNORECASE)
 
     if not abs_match:
-        # Fallback: find the first paragraph that looks like body text.
-        # Skip preamble blocks (title/author/affiliation) by requiring that
-        # none of the paragraph lines match institution patterns.
+        # Fallback : trouver le premier paragraphe ressemblant à du texte de corps.
+        # Ignorer les blocs de préambule (titre/auteurs/affiliations) :
+        # aucune ligne du paragraphe ne doit correspondre aux motifs d'institution.
         for m in re.finditer(r'\n\n([A-Z][^\n]{50,}(?:\n[^\n]+){2,})', text):
             paragraph = m.group(1)
             lines_p = paragraph.splitlines()
             if any(INSTITUTION_RE.search(l) or "@" in l for l in lines_p):
                 continue
-            # Require at least half the lines to be ≥ 50 chars (body text, not names)
+            # Exiger qu'au moins la moitié des lignes fasse ≥ 50 caractères (corps de texte, pas des noms)
             long_lines = sum(1 for l in lines_p if len(l.strip()) >= 50)
             if long_lines < max(1, len(lines_p) // 2):
                 continue
@@ -273,17 +274,17 @@ def extract_abstract(text):
 
     raw = remaining[: stop.start()] if stop else remaining[:3000]
 
-    # Multi-column PDFs can mix abstract text with Introduction text.
-    # Strategy:
-    #   1. Split into paragraphs on blank lines.
-    #   2. Merge consecutive paragraphs joined by a hyphen line-break
-    #      (e.g. "has been de-" + "signed to…" → "has been designed to…").
-    #   3. Keep only paragraphs that start with an uppercase letter;
-    #      lowercase-start paragraphs that are NOT hyphen continuations
-    #      are right-column overflow from another section.
+    # Les PDF multi-colonnes peuvent mêler texte de l'abstract et de l'Introduction.
+    # Stratégie :
+    #   1. Découper en paragraphes sur les lignes vides.
+    #   2. Fusionner les paragraphes liés par un trait d'union en fin de ligne
+    #      (ex. "has been de-" + "signed to…" → "has been designed to…").
+    #   3. Conserver uniquement les paragraphes commençant par une majuscule ;
+    #      les paragraphes débutant en minuscule sont du débordement de colonne
+    #      provenant d'une autre section.
     paragraphs = [p.strip() for p in re.split(r'\n{2,}', raw) if p.strip()]
 
-    # Step 2: merge hyphen continuations
+    # Étape 2 : fusionner les continuations avec trait d'union
     merged = []
     i = 0
     while i < len(paragraphs):
@@ -292,19 +293,19 @@ def extract_abstract(text):
                and para.endswith('-')
                and paragraphs[i + 1][:1].islower()):
             i += 1
-            # Strip the hyphen and join (the fragment completes the cut word)
+            # Supprimer le trait d'union et joindre (le fragment complète le mot coupé)
             para = para[:-1] + paragraphs[i]
         merged.append(para)
         i += 1
 
-    # Step 3: keep uppercase-starting paragraphs
+    # Étape 3 : conserver les paragraphes commençant par une majuscule
     valid = [p for p in merged if re.match(r'^[A-ZÀ-Ö]', p)]
     clean = " ".join(valid) if valid else re.sub(r'\s+', ' ', raw).strip()
     return re.sub(r'\s+', ' ', clean).strip()
 
 
 # ---------------------------------------------------------------------------
-# Bibliography extraction
+# Extraction de la bibliographie
 # ---------------------------------------------------------------------------
 
 BIBLIO_ENTRY_RE = re.compile(r'^[A-ZÀ-Ö][a-z\-]+,\s+[A-Z]\.', re.MULTILINE)
@@ -312,7 +313,7 @@ BIBLIO_NUMBERED_RE = re.compile(r'^\[\d+\]', re.MULTILINE)
 
 
 def extract_references(text):
-    # Handle form feeds (\x0c) used as page separators in some PDFs
+    # Remplacer les sauts de page (\x0c) utilisés comme séparateurs dans certains PDF
     text_clean = text.replace('\x0c', '\n')
 
     header = re.search(
@@ -326,17 +327,17 @@ def extract_references(text):
     window_start = max(0, header.start() - 5000)
     window = text_clean[window_start:]
 
-    # Detect which entry format is used
+    # Détecter le format des entrées bibliographiques utilisé
     named_matches = list(BIBLIO_ENTRY_RE.finditer(window))
     numbered_matches = list(BIBLIO_NUMBERED_RE.finditer(window))
 
-    # Use numbered format if it has more matches after the header
+    # Utiliser le format numéroté s'il a plus d'occurrences après l'en-tête
     post_header = text_clean[header.end():]
     if len(BIBLIO_NUMBERED_RE.findall(post_header)) >= len(BIBLIO_ENTRY_RE.findall(post_header)):
-        # Numbered entries: [1] ..., [2] ..., etc. — take raw text after header
+        # Entrées numérotées : [1] ..., [2] ... — prendre le texte brut après l'en-tête
         return post_header.strip()
 
-    # Named entries ("Lastname, F. ...") with multi-column awareness
+    # Entrées nommées ("Nom, P. ...") avec gestion du multi-colonne
     positions = [m.start() for m in named_matches]
     if not positions:
         return post_header.strip()
@@ -345,7 +346,7 @@ def extract_references(text):
     for i, pos in enumerate(positions):
         next_pos = positions[i + 1] if i + 1 < len(positions) else len(window)
         span = window[pos:next_pos]
-        # Truncate at the first blank line (drops intervening body text)
+        # Tronquer à la première ligne vide (supprime le texte de corps intercalé)
         blank = re.search(r'\n[ \t]*\n', span)
         entry = span[: blank.start()].strip() if blank else span.strip()
         if re.search(r'\b(19|20)\d{2}\b', entry):
@@ -355,11 +356,11 @@ def extract_references(text):
 
 
 # ---------------------------------------------------------------------------
-# Email ↔ author matching
+# Correspondance email ↔ auteur
 # ---------------------------------------------------------------------------
 
 def match_email_to_author(author_name, emails, used):
-    # Normalise: remove accents crudely, lowercase, strip punctuation
+    # Normaliser : supprimer grossièrement les accents, mettre en minuscules, enlever la ponctuation
     def norm(s):
         return re.sub(r'[^a-z]', '', s.lower()
                       .replace('é', 'e').replace('è', 'e').replace('ê', 'e')
@@ -373,14 +374,14 @@ def match_email_to_author(author_name, emails, used):
         if email in used:
             continue
         local = norm(email.split("@")[0])
-        # Bidirectional: author part in email OR email local in author part
+        # Bidirectionnel : partie auteur dans l'email OU local email dans la partie auteur
         if any(p in local or local in p for p in parts):
             return email
     return ""
 
 
 # ---------------------------------------------------------------------------
-# XML construction
+# Construction du XML
 # ---------------------------------------------------------------------------
 
 def build_xml(article, txt_content, emails):
@@ -413,33 +414,79 @@ def build_xml(article, txt_content, emails):
 
 
 # ---------------------------------------------------------------------------
+# Sortie TXT
+# ---------------------------------------------------------------------------
+
+def build_txt(article, txt_content, emails):
+    """Produit une représentation en texte brut des métadonnées de l'article."""
+    title = article["title"] or extract_title_from_txt(txt_content)
+
+    if article["authors_raw"]:
+        authors_list = [a.strip() for a in re.split(r'\s*;\s*', article["authors_raw"]) if a.strip()]
+    else:
+        authors_list = extract_authors_from_txt(txt_content)
+
+    used_emails = set()
+    authors_lines = []
+    for author_name in authors_list:
+        email = match_email_to_author(author_name, emails, used_emails)
+        if email:
+            used_emails.add(email)
+        mail_str = f" <{email}>" if email else ""
+        authors_lines.append(f"  - {author_name}{mail_str}")
+
+    abstract = extract_abstract(txt_content)
+    biblio   = extract_references(txt_content)
+
+    sections = [
+        f"FICHIER   : {article['filename']}",
+        f"TITRE     : {title}",
+        "AUTEURS   :\n" + ("\n".join(authors_lines) if authors_lines else "  (inconnus)"),
+        "ABSTRACT  :\n  " + (abstract or "(non trouvé)"),
+        "RÉFÉRENCES:\n  " + (biblio.replace("\n", "\n  ") if biblio else "(non trouvées)"),
+    ]
+    return "\n\n".join(sections) + "\n"
+
+
+# ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
 
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description="Parseur d'articles scientifiques PDF → XML ou TXT"
+    )
+    group = parser.add_mutually_exclusive_group(required=True)
+    group.add_argument("-x", action="store_true", help="Sortie en XML  (dans sprints/xmls/)")
+    group.add_argument("-t", action="store_true", help="Sortie en TXT  (dans sprints/txts/)")
+    return parser.parse_args()
+
+
 def main():
-    os.makedirs(OUTPUT_DIR, exist_ok=True)
+    args = parse_args()
+
+    output_dir = XML_DIR if args.x else TXT_DIR
+    os.makedirs(output_dir, exist_ok=True)
+
     articles = list_articles(PDFS_DIR)
 
     for article in articles:
         base = os.path.splitext(article["filename"])[0]
-        txt_path = os.path.join(PDFS_DIR, base + ".txt")
+        txt_content = article["txt_content"]
+        emails = expand_emails(txt_content)
 
-        txt_content = ""
-        emails = []
-        if os.path.exists(txt_path):
-            with open(txt_path, encoding="utf-8") as f:
-                txt_content = f.read()
-            emails = expand_emails(txt_content)
+        if args.x:
+            root = build_xml(article, txt_content, emails)
+            tree = ElementTree(root)
+            indent(tree, space="  ")
+            output_path = os.path.join(output_dir, base + ".xml")
+            tree.write(output_path, encoding="unicode", xml_declaration=True)
         else:
-            print(f"[WARN] fichier texte introuvable : {txt_path}")
+            content = build_txt(article, txt_content, emails)
+            output_path = os.path.join(output_dir, base + ".txt")
+            with open(output_path, "w", encoding="utf-8") as f:
+                f.write(content)
 
-        root = build_xml(article, txt_content, emails)
-
-        tree = ElementTree(root)
-        indent(tree, space="  ")
-
-        output_path = os.path.join(OUTPUT_DIR, base + ".xml")
-        tree.write(output_path, encoding="unicode", xml_declaration=True)
         print(f"Généré : {output_path}")
 
 
