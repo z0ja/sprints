@@ -886,10 +886,7 @@ slight improvement in the results. As future work, we plan to apply other techni
 irrelevant applications using the Rocchio algorithm (Rocchio, 1971), weighting the different parts of an application, etc. in
 order to improve results. We also plan to use a categorization of jobs to take into consideration similar jobs, such as ’’devel-
 oper’’ and ‘‘programmer’’. Finally we propose to measure the CV quality by building an evaluation on an Internet portal. Our
-aim with this evaluation is to present a job-seeker with a list of the most suitable job ads according to his proﬁle.
-Acknowledgements
-Authors thank Richard James, Véronique Moriceau, André Bittar, ANRT (Agence Nationale de la Recherche Technologique)
-and Aktor Interactive that partially supported this work.</conclusion>
+aim with this evaluation is to present a job-seeker with a list of the most suitable job ads according to his proﬁle.</conclusion>
   <discussion>N/A</discussion>
   <biblio>Audras, I., &amp; Ganascia, J.-G. (2006). Apprentissage du frantais langue TtrangFre et TALN: Analyses de corpus Tcrits a l’aide d’outils d’extraction automatique du langage. In J.-M. Viprey (Ed.), 8Fmes JournTes d’Analyse de DonnTes Textuelles (pp. 67–78). Univ. de Franche ComtT, Besanton 2006.
 Bellot, P., &amp; El-Bèze, M. (2001). Classiﬁcation et segmentation de textes par arbres de dTcision. In TSI (Vol. 20, pp. 107–134). HermFs. Ben Abdessalem Karaa, W. (2009). Web-based recruiting: A framework for cvs handling. In Second international conference on web and information technologies ‘‘ICWIT’09’’, kerkennah Island, Sfax, Tunisia, June 12–14 (pp. 395–406).

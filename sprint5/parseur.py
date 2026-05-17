@@ -368,7 +368,8 @@ def extract_references(text):
     text_clean = text.replace('\x0c', '\n')
 
     header = re.search(
-        r'\n(?:References|Bibliography|REFERENCES|BIBLIOGRAPHY'
+        r'\n(?:(?:Bibliographical\s+)?References|(?:Language\s+Resource\s+)?References'
+        r'|Bibliography|REFERENCES|BIBLIOGRAPHY'
         r'|R\s+EFERENCES|R\s+IBLIOGRAPHY)\s*\n',
         text_clean,
     )
@@ -478,15 +479,20 @@ def extract_body_sections(text):
     
     intro_words = r'(?:Introduction|INTRODUCTION)'
     disc_words = r'(?:Discussions?|DISCUSSIONS?)'
-    conc_words = r'(?:Conclusions?|Concluding Remarks?|Discussion and Future Work|CONCLUSIONS?|CONCLUDING REMARKS)'
-    ref_words = r'(?:References?|Bibliography|REFERENCES?|BIBLIOGRAPHY)'
+    conc_words = r'(?:Conclusions?|Concluding Remarks?|Discussion and Future Work|Conclusions? and Future Work|CONCLUSIONS?|CONCLUDING REMARKS)'
+    # Pour les références, on exige un en-tête strict : le mot seul (ou quasi seul) sur sa ligne
+    ref_words = r'(?:(?:Bibliographical\s+)?References|(?:Language\s+Resource\s+)?References|Bibliography|REFERENCES|BIBLIOGRAPHY|R\s+EFERENCES|R\s+IBLIOGRAPHY)'
+    # Les remerciements servent aussi de marqueur de fin pour la conclusion
+    ack_words = r'(?:Acknowledg(?:e)?ments?|ACKNOWLEDG(?:E)?MENTS?)'
     
     prefix = r'\n[ \t]*(?:[0-9IVX]+\.?\s*\n?[ \t]*)?'
     
     intro_match = re.search(prefix + intro_words + r'\b[^\n]*\n', text_clean)
     disc_match = re.search(prefix + disc_words + r'\b[^\n]*\n', text_clean)
     conc_match = re.search(prefix + conc_words + r'\b[^\n]*\n', text_clean)
-    ref_match = re.search(prefix + ref_words + r'\b[^\n]*\n', text_clean)
+    # Pour ref_match, on n'accepte que des lignes courtes après le mot-clé (vrai en-tête, pas une phrase)
+    ref_match = re.search(prefix + ref_words + r'\s*\n', text_clean)
+    ack_match = re.search(prefix + ack_words + r'\s*\n', text_clean)
     
     pos_intro = intro_match.start() if intro_match else -1
     pos_intro_end = intro_match.end() if intro_match else -1
@@ -495,33 +501,37 @@ def extract_body_sections(text):
     pos_conc = conc_match.start() if conc_match else -1
     pos_conc_end = conc_match.end() if conc_match else -1
     pos_ref = ref_match.start() if ref_match else len(text_clean)
+    pos_ack = ack_match.start() if ack_match else len(text_clean)
     
-    if pos_intro > pos_ref: pos_intro = -1; pos_intro_end = -1
-    if pos_disc > pos_ref: pos_disc = -1; pos_disc_end = -1
-    if pos_conc > pos_ref: pos_conc = -1; pos_conc_end = -1
+    # Le marqueur de fin effectif est le plus précoce entre références et remerciements
+    pos_end = min(pos_ref, pos_ack)
+    
+    if pos_intro > pos_end: pos_intro = -1; pos_intro_end = -1
+    if pos_disc > pos_end: pos_disc = -1; pos_disc_end = -1
+    if pos_conc > pos_end: pos_conc = -1; pos_conc_end = -1
     
     # Résolution des chevauchements
     if pos_intro > -1 and pos_intro == pos_disc: pos_disc = -1; pos_disc_end = -1
     if pos_disc > -1 and pos_disc == pos_conc: pos_disc = -1; pos_disc_end = -1
     
     if pos_intro > -1:
-        end_intro = min([p for p in [pos_disc, pos_conc, pos_ref, len(text_clean)] if p > pos_intro_end], default=len(text_clean))
+        end_intro = min([p for p in [pos_disc, pos_conc, pos_end, len(text_clean)] if p > pos_intro_end], default=len(text_clean))
         next_sec_match = re.search(r'\n[ \t]*(?:[0-9IVX]{1,3}\.?\s+)[A-Z][a-zA-Z ]+\b[^\n]*\n', text_clean[pos_intro_end:end_intro])
         if next_sec_match:
             end_intro = pos_intro_end + next_sec_match.start()
         sections["introduction"] = text_clean[pos_intro_end:end_intro].strip()
         
     if pos_disc > -1:
-        end_disc = min([p for p in [pos_conc, pos_ref, len(text_clean)] if p > pos_disc_end], default=len(text_clean))
+        end_disc = min([p for p in [pos_conc, pos_end, len(text_clean)] if p > pos_disc_end], default=len(text_clean))
         sections["discussion"] = clean_body_section(text_clean[pos_disc_end:end_disc].strip(), text_clean)
         
     if pos_conc > -1:
-        end_conc = pos_ref if pos_ref > pos_conc_end else len(text_clean)
+        end_conc = pos_end if pos_end > pos_conc_end else len(text_clean)
         sections["conclusion"] = clean_body_section(text_clean[pos_conc_end:end_conc].strip(), text_clean)
         
     start_corps = pos_intro_end if pos_intro > -1 else -1
     if start_corps > -1:
-        end_intro_max = min([p for p in [pos_disc, pos_conc, pos_ref, len(text_clean)] if p > pos_intro_end], default=len(text_clean))
+        end_intro_max = min([p for p in [pos_disc, pos_conc, pos_end, len(text_clean)] if p > pos_intro_end], default=len(text_clean))
         next_sec_match = re.search(r'\n[ \t]*(?:[0-9IVX]{1,3}\.?\s+)[A-Z][a-zA-Z ]+\b[^\n]*\n', text_clean[pos_intro_end:])
         if next_sec_match and (pos_intro_end + next_sec_match.start()) < end_intro_max:
             start_corps = pos_intro_end + next_sec_match.start()
@@ -531,7 +541,7 @@ def extract_body_sections(text):
         abs_match = re.search(r'\bAbstract\b[.\-—\s]*\n?', text_clean, re.IGNORECASE)
         start_corps = abs_match.end() + 1000 if abs_match else 1000
 
-    end_corps = min([p for p in [pos_disc, pos_conc, pos_ref, len(text_clean)] if p > start_corps], default=len(text_clean))
+    end_corps = min([p for p in [pos_disc, pos_conc, pos_end, len(text_clean)] if p > start_corps], default=len(text_clean))
     
     if start_corps > -1 and end_corps > start_corps:
         if start_corps > len(text_clean): start_corps = max(0, len(text_clean) - 1000)

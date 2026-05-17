@@ -538,10 +538,7 @@ bours found for a given word with speciﬁc semantic relations. We also plan to 
 bag-of-words (windowed) vectors instead of grammatical relations for this task.
 Finally, we believe that the data sets constructed from WordNet, which we publish alongside this
 paper, can be used as a useful benchmark in evaluating future advances in this area, both for supervised
-and unsupervised methods.
-Acknowledgements
-This work was funded by UK EPSRC project EP/IO37458/1 “A Uniﬁed Model of Compositional and
-Distributional Compositional Semantics: Theory and Applications”.</conclusion>
+and unsupervised methods.</conclusion>
   <discussion>N/A</discussion>
   <biblio>Marco Baroni and Alessandro Lenci. 2011. How we BLESSed distributional semantic evaluation. In Proceedings
 of the GEMS 2011 workshop on Geometric Models of Natural Language Semantics, EMNLP 2011.

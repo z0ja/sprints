@@ -775,12 +775,7 @@ The next natural step is to use the supervised features to guide development of 
 sure for hypernymy detection: Now that we have examples, we hope to propose a method which selects
 relevant features automatically. We also would like to explore detection of other relationships, such
 as meronymy. Finally, we would like to perform an extrinsic evaluation of our hypernymy detection
-approach in an actual RTE system.
-Acknowledgements
-This research was supported by the DARPA DEFT program under AFRL grant FA8750-13-2-0026. The
-authors acknowledge the Texas Advanced Computing Center (TACC)10 for providing grid resources that
-have contributed to these results. We thank the anonymous reviewers and the UTexas NLP group for
-their helpful comments and suggestions.</conclusion>
+approach in an actual RTE system.</conclusion>
   <discussion>N/A</discussion>
   <biblio>Marco Baroni and Alessandro Lenci. 2011. How we BLESSed distributional semantic evaluation. In Proceedings
 of the GEMS 2011 Workshop on GEometrical Models of Natural Language Semantics, pages 1–10, Edinburgh,
