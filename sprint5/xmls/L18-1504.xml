@@ -58,7 +58,7 @@ describes the creation and the features of our corpus. In
 Section 4 we analyze the results achieved by state-of-the-
 art methods using our dataset. Finally, conclusions are set
 out in Section 5.</introduction>
-  <body>2.
+  <corps>2.
 Related Work
 Sentence Compression (SC) aims at producing a reduced
 grammatically correct sentence from a source sentence. SC
@@ -112,7 +112,7 @@ Characteristics
 French
 Portuguese
 Spanish
-Source</body>
+Source</corps>
   <conclusion>N/A</conclusion>
   <discussion>N/A</discussion>
   <biblio>N/A</biblio>

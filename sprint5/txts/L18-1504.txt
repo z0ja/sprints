@@ -1,0 +1,109 @@
+FICHIER   : L18-1504.pdf
+
+TITRE     : A New Annotated Portuguese/Spanish Corpus for the Multi-Sentence
+
+AUTEURS   :
+  - Compression Task
+  - Elvys Linhares Pontes1 <elvys.linhares-pontes@univ-avignon.fr>
+  - Juan-Manuel Torres-Moreno1 <juan-manuel.torres@univ-avignon.fr>
+  - Stéphane Huet1 <stephane.huet@univ-avignon.fr>
+  - Andréa Carneiro Linhares3 <andrea.linhares@ufc.br>
+
+ABSTRACT  :
+  Multi-sentence compression aims to generate a short and informative compression from several source sentences that deal with the same topic. In this work, we present a new corpus for the Multi-Sentence Compression (MSC) task in Portuguese and Spanish. We also provide on this corpus a comparison of two state-of-the-art MSC systems.
+
+INTRODUCTION:
+  Among the various applications of Natural Language Pro-
+  cessing, Automatic Text Summarization (ATS) aims at
+  summarizing one or more texts automatically. Summariza-
+  tion systems identify relevant data and create a summary
+  from key information. The (Multi-)Sentence Compression
+  task can be seen as a subproblem of ATS with the objective
+  to generate a shorter, informative and correct sentence from
+  source sentence(s).
+  In many cases, state-of-the-art NLP systems are evaluated
+  with experiments restrained to the English language, in part
+  because there are a lot of available English resources for
+  most NLP tasks. As regards Multi-Sentence Compression
+  (MSC), the available resources are unfortunately limited; to
+  our knowledge, only one dataset is freely available and it is
+  conﬁned to the French language (Boudin and Morin, 2013).
+  In this work, we present a new annotated corpus in the Por-
+  tuguese and Spanish languages for the MSC task. Using
+  this corpus, we evaluate two state-of-the-art systems and
+  show that the use of several languages leads to more miti-
+  gated results on the superiority of one system than the use
+  of the French corpus alone.
+  The remainder of this paper is organized as follows. In Sec-
+  tion 2, we characterize MSC with respect to related tasks
+  from the perspective of the available corpora. Section 3
+  describes the creation and the features of our corpus. In
+  Section 4 we analyze the results achieved by state-of-the-
+  art methods using our dataset. Finally, conclusions are set
+  out in Section 5.
+
+CORPS:
+  2.
+  Related Work
+  Sentence Compression (SC) aims at producing a reduced
+  grammatically correct sentence from a source sentence. SC
+  can be used in the context of the abstractive summarization
+  of documents, the generation of article titles or the simpli-
+  ﬁcation of complex sentences, using diverse methods (opti-
+  mization, syntactic structure, deletion of words and/or gen-
+  eration of sentences). The corpora for SC can be divided
+  in two categories: deletion-based and summarization-based
+  SC.
+  In the case of SC by deletion of words, sentences are
+  compressed by removing irrelevant words (Filippova et al.,
+  2015; Ive and Yvon, 2016). Knight and Marcu (2002) de-
+  veloped a SC corpus by aligning abstracts and sentences
+  extracted from the Ziff-Davis corpus, which is a collec-
+  tion of newspaper articles announcing computer products.
+  Clarke and Lapata (2008) provided two manually created
+  two-reference corpora for deletion-based compression. Fil-
+  ippova and Altun (2013), and Filippova et al. (2015) ex-
+  tracted and released deletion-based compressions by align-
+  ing news headlines to the ﬁrst sentences. Finally, Ive and
+  Yvon (2016) developed an English-French parallel corpus
+  for the compression and simpliﬁcation tasks.
+  SC by generations of sentences analyzes a whole sentence
+  and generates a new shorter sentence with the core infor-
+  mation of the source sentence (Rush et al., 2015; Gan-
+  itkevitch et al., 2011; Cohn and Lapata, 2008; Toutanova
+  et al., 2016). Ganitkevitch et al. (2011) created a corpus
+  of compression paraphrases composed of parallel English-
+  English sentences obtained from multiple reference transla-
+  tions. Rush et al. (2015) produced compression pairs made
+  up of the headline of each article and its ﬁrst sentence; they
+  released their code to extract data from the annotated Gi-
+  gaword (Graff et al., 2011). Cohn and Lapata (2008) and
+  Toutanova et al. (2016) describe two manually created ab-
+  stractive compression corpora that are publicly available.
+  The dataset presented in Cohn and Lapata (2008) comprises
+  a single-reference sentence pairs for abstractive summary,
+  while the corpus developed by Toutanova et al. (2016) has
+  multiple references for short paragraph compressions.
+  Multi-Sentence Compression (MSC), also known as Multi-
+  Sentence Fusion, is a variation of SC. MSC aims at ana-
+  lyzing a cluster of similar sentences to generate a new sen-
+  tence, which is shorter than the average length of source
+  sentences and has the key information of the cluster (Barzi-
+  lay and McKeown, 2005; Filippova, 2010). MSC enables
+  summarization and question-answering systems to gener-
+  3192
+  
+  Characteristics
+  French
+  Portuguese
+  Spanish
+  Source
+
+CONCLUSION:
+  (non trouvée)
+
+DISCUSSION:
+  (non trouvée)
+
+RÉFÉRENCES:
+  (non trouvées)

@@ -13,7 +13,8 @@ INSTITUTION_RE = re.compile(
     r'\b(?:universit|institu|laborator|laboratoire|\blab\b|cnrs|école|polytechn|'
     r'department|dept\.|faculty|grenoble|montréal|avignon|marseille|rennes|'
     r'vannes|upf|unam|iula|dtic|lia\b|cnrs|ea\s*\d+|umr\s*\d+|cp\s*\d+|'
-    r'communicated by|^\d{4,5}|^bp\d|\bInc\b|\bCorp\b|\bLtd\b|\bLLC\b)',
+    r'communicated by|^\d{4,5}|^bp\d|\bInc\b|\bCorp\b|\bLtd\b|\bLLC\b|'
+    r'\bUK\b|\bUSA\b|\bFrance\b|\bCanada\b|\bGermany\b|\bSpain\b|\bItaly\b|\bChina\b|\bJapan\b)',
     re.IGNORECASE,
 )
 
@@ -141,6 +142,14 @@ def expand_emails(text):
             name = name.strip()
             # Keep only entries that look like email local parts (contain a dot or dash)
             if name and ("." in name or "-" in name):
+                emails.append(f"{name}@{domain}")
+
+    # Grouped without braces but comma-separated: a,b,c@domain.com
+    for m in re.finditer(r'(?<![\w.\-])([a-zA-Z0-9.\-_]+(?:,[a-zA-Z0-9.\-_]+)+)@([\w.\-]+)', text):
+        domain = m.group(2)
+        for name in m.group(1).split(","):
+            name = name.strip()
+            if name:
                 emails.append(f"{name}@{domain}")
 
     # Emails standards, en ignorant les domaines de numérisation connus
@@ -552,7 +561,8 @@ def extract_affiliations_from_txt(text, known_emails):
     def save_block():
         nonlocal current_authors, current_affil, current_emails
         if current_authors or current_affil or current_emails:
-            blocks.append((current_authors, ", ".join(current_affil), current_emails))
+            cleaned_affil = [re.sub(r'[,\s]+$', '', a) for a in current_affil]
+            blocks.append((current_authors, ", ".join(cleaned_affil), current_emails))
         current_authors = []
         current_affil = []
         current_emails = []
@@ -698,7 +708,7 @@ def build_xml(article, txt_content, emails):
     
     sections = extract_body_sections(txt_content)
     SubElement(root, "introduction").text = sections["introduction"] or "N/A"
-    SubElement(root, "body").text = sections["corps"] or "N/A"
+    SubElement(root, "corps").text = sections["corps"] or "N/A"
     SubElement(root, "conclusion").text = sections["conclusion"] or "N/A"
     SubElement(root, "discussion").text = sections["discussion"] or "N/A"
     

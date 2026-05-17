@@ -6,12 +6,12 @@
     <auteur>
       <name>Marco Baroni</name>
       <mail>marco.baroni@unitn.it</mail>
-      <affiliation>University of Trento</affiliation>
+      <affiliation>University of Trento, Trento, Italy</affiliation>
     </auteur>
     <auteur>
       <name>Alessandro Lenci</name>
       <mail>alessandro.lenci@ling.unipi.it</mail>
-      <affiliation>University of Pisa</affiliation>
+      <affiliation>University of Pisa, Pisa, Italy</affiliation>
     </auteur>
   </auteurs>
   <abstract>We introduce BLESS, a data set speciﬁcally designed for the evaluation of distributional semantic models. BLESS contains a set of tu- ples instantiating different, explicitly typed se- mantic relations, plus a number of controlled random tuples. It is thus possible to assess the ability of a model to detect truly related word pairs, as well as to perform in-depth analy- ses of the types of semantic relations that a model favors. We discuss the motivations for BLESS, describe its construction and struc- ture, and present examples of its usage in the evaluation of distributional semantic models.</abstract>
@@ -60,7 +60,7 @@ address these three conditions by presenting BLESS
 a new data set speciﬁcally geared towards the in-
 trinsic evaluation of DSMs, downloadable from:
 http://clic.cimec.unitn.it/distsem.</introduction>
-  <body>2
+  <corps>2
 Distributional semantics benchmarks
 There are several benchmarks that have been widely
 adopted for the evaluation of DSMs, all of them cap-
@@ -1163,7 +1163,7 @@ a document is indeed a much looser cue to similarity
 than speciﬁcally co-occurring within a narrow win-
 dow). Traditional DSM tests, based on a single qual-
 ity measure, would not have given us this broad view
-of how models are behaving.</body>
+of how models are behaving.</corps>
   <conclusion>We introduced BLESS, the ﬁrst data set speciﬁcally
 designed for the intrinsic evaluation of DSMs. The
 data set contains tuples instantiating different, ex-

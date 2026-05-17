@@ -53,7 +53,7 @@ This work is licenced under a Creative Commons Attribution 4.0 International Lic
 are added by the organizers. License details: http://creativecommons.org/licenses/by/4.0/
 1Code and data are available at http://stephenroller.com/research/coling14.
 1025</introduction>
-  <body>2
+  <corps>2
 Background
 Distributional models.
 Distributional models represent a word through the contexts in which it has
@@ -756,7 +756,7 @@ Clearly, the selected features are domain dependent; most are directly related t
 concept classes of BLESS. We expect that our method should work well for other data sets, given its high
 accuracy and the strict training procedure. However, these features are unlikely to be global indicators of
 hypernymy. This emphasizes the need, in future work, to ﬁnd a way to automatically determine relevance
-on a per-word basis.</body>
+on a per-word basis.</corps>
   <conclusion>In this paper, we have tested the Distributional Inclusion Hypothesis, the basis for distributional ap-
 proaches to hypernymy. We have found that the hypothesis only works if inclusion is selectively applied
 to a set of relevant dimensions.

@@ -6,92 +6,42 @@
     <auteur>
       <name>Rémy Kessler</name>
       <mail>kessler@limsi.fr</mail>
-      <affiliation>LIMSI-CNRS</affiliation>
-    </auteur>
-    <auteur>
-      <name>Orsay</name>
-      <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
-    </auteur>
-    <auteur>
-      <name>France</name>
-      <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
+      <affiliation>LIMSI-CNRS, Orsay, France</affiliation>
     </auteur>
     <auteur>
       <name>Xavier Tannier</name>
       <mail>xtannier@limsi.fr</mail>
-      <affiliation>LIMSI-CNRS</affiliation>
+      <affiliation>LIMSI-CNRS, Orsay, France</affiliation>
     </auteur>
     <auteur>
       <name>Univ. Paris-Sud,</name>
       <mail>N/A</mail>
-      <affiliation>LIMSI-CNRS</affiliation>
-    </auteur>
-    <auteur>
-      <name>Orsay</name>
-      <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
-    </auteur>
-    <auteur>
-      <name>France</name>
-      <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
+      <affiliation>LIMSI-CNRS, Orsay, France</affiliation>
     </auteur>
     <auteur>
       <name>Caroline Hagège</name>
       <mail>hagege@xrce.xerox.com</mail>
-      <affiliation>N/A</affiliation>
+      <affiliation>Meylan, France</affiliation>
     </auteur>
     <auteur>
       <name>Xerox Research Center Europe</name>
       <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
-    </auteur>
-    <auteur>
-      <name>Meylan</name>
-      <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
-    </auteur>
-    <auteur>
-      <name>France</name>
-      <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
+      <affiliation>Meylan, France</affiliation>
     </auteur>
     <auteur>
       <name>Véronique Moriceau</name>
       <mail>moriceau@limsi.fr</mail>
-      <affiliation>Univ. Paris-Sud, LIMSI-CNRS</affiliation>
-    </auteur>
-    <auteur>
-      <name>Orsay</name>
-      <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
-    </auteur>
-    <auteur>
-      <name>France</name>
-      <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
+      <affiliation>Univ. Paris-Sud, LIMSI-CNRS, Orsay, France</affiliation>
     </auteur>
     <auteur>
       <name>André Bittar</name>
       <mail>bittar@xrce.xerox.com</mail>
-      <affiliation>N/A</affiliation>
+      <affiliation>Meylan, France</affiliation>
     </auteur>
     <auteur>
       <name>Xerox Research Center Europe</name>
       <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
-    </auteur>
-    <auteur>
-      <name>Meylan</name>
-      <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
-    </auteur>
-    <auteur>
-      <name>France</name>
-      <mail>N/A</mail>
-      <affiliation>N/A</affiliation>
+      <affiliation>Meylan, France</affiliation>
     </auteur>
   </auteurs>
   <abstract>We present an approach for detecting salient (important) dates in texts in order to auto- matically build event timelines from a search query (e.g. the name of an event or person, etc.). This work was carried out on a corpus of newswire texts in English provided by the Agence France Presse (AFP). In order to ex- tract salient dates that warrant inclusion in an event timeline, we ﬁrst recognize and normal- ize temporal expressions in texts and then use a machine-learning approach to extract salient dates that relate to a particular topic. We fo- cused only on extracting the dates and not the events to which they are related.</abstract>
@@ -137,7 +87,7 @@ The system used for temporal analysis is described
 in Section 4, and the strategy used for indexing and
 ﬁnding salient dates, as well as the results obtained,
 are given in Section 51.</introduction>
-  <body>2
+  <corps>2
 Related Work
 The ISO-TimeML language (Pustejovsky et al.,
 2010) is a speciﬁcation language for manual anno-
@@ -855,7 +805,7 @@ ing used once as test data. The ﬁnal scores, pre-
 sented in Table 3, are the average of these 4 pro-
 cesses. As shown in this table, the learning approach
 improves MAP results by about 0.05 point.
-5.4</body>
+5.4</corps>
   <conclusion>This article presents a task of “date extraction” and
 shows the importance of taking temporal informa-
 tion into consideration and how with relatively sim-

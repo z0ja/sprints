@@ -6,7 +6,7 @@
     <auteur>
       <name>Universitat Pompeu Fabra</name>
       <mail>N/A</mail>
-      <affiliation>Institut Universitari de Lingüística Aplicada. Universitat Pompeu Fabra</affiliation>
+      <affiliation>Institut Universitari de Lingüística Aplicada. Universitat Pompeu Fabra, Barcelona – Spain - 08002</affiliation>
     </auteur>
   </auteurs>
   <abstract>In this paper we account for the main characteristics and performance of a number of recently developed term extraction systems. The analysed tools represent the main strategies followed by researchers in this area. All systems are analysed and compared against a set of technically relevant characteristics. 1.</abstract>
@@ -24,7 +24,7 @@ and terminological dictionaries; text indexing; automatic translation; building 
                                                           
 * In Bourigault, D.; Jacquemin, C.; L’Homme, M-C. (2001) Recent Advances in Computational 
 Terminology, 53-88.</introduction>
-  <body>1 In order to give a broader view of TE we use both extractor and detector to refer to the same notion. 
+  <corps>1 In order to give a broader view of TE we use both extractor and detector to refer to the same notion. 
 However, we are aware of the fact that some scholars attribute different meanings to these words. 
 
 2 Automatic Term Detection: a Review of Current Systems 
@@ -168,7 +168,7 @@ b) A brief description of the system.
 c) A short evaluation of the most relevant aspects. This evaluation is mainly 
 based on papers, oral presentations in congresses and working papers, etc. 
 2.1. 
-ANA</body>
+ANA</corps>
   <conclusion>N/A</conclusion>
   <discussion>N/A</discussion>
   <biblio>Arppe, A. 1995. “Term extraction from unrestricted text”. Lingsoft Web Site: http://www.lingsoft.com

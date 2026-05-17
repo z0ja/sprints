@@ -38,7 +38,7 @@ language processing methods, etc. In this study, we apply a
 word embedding method Word2Vec, using skills from online
 job post descriptions. We treat skills as terms, job posts as
 documents and ﬁnd the relatedness of these skills.</introduction>
-  <body>II. RELATED WORK
+  <corps>II. RELATED WORK
 To ﬁnd relatedness of skills, Simon Hughes [4] from Dice
 proposed an approach using Latent Semantic Analysis with
 an assumption that skills are related to skills which occur
@@ -186,7 +186,7 @@ Pig
 HDFS
 Hadoop
 Spark
-Impala</body>
+Impala</corps>
   <conclusion>In this paper, we developed a relationship network between
 skills in recruitment domain by using the neural net inspired
 by Word2vec model. We observed that it is possible to

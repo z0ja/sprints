@@ -57,7 +57,7 @@ a ﬁxed length vector. The BoW techniques generate very sparse and high dimensi
 space vector. Text representation using distributed word/sentence representation or
 word embedding is gain rapid momentum recently. In this paper, one of the objectives
 1https://phys.org/news/2018-08-social-media-bad-disaster-zones.html</introduction>
-  <body>2
+  <corps>2
 
 Table 2.
 sample post for the each class.
@@ -1592,7 +1592,7 @@ other CNN model with 3 convolution layer with diﬀerent ﬁlters height. As we 
 at results shown in Table 6,7,8, and 9, one can conclude that by and large weighted
 F1 score lower for CNN model with multiple convolution layer than CNN model with
 single convolution layer.
-18</body>
+18</corps>
   <conclusion>In this Paper, Multilingual Social media stream is studied with special kind of text
 features: Aggression and fact perspective. Exhaustive experiments are performed to
 benchmark the text representation scheme on machine learning classiﬁers and deep
